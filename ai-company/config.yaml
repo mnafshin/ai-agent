@@ -1,0 +1,97 @@
+# AI Company Configuration
+
+## Project Settings
+```yaml
+project_name: ai-company
+version: 1.0.0
+description: Multi-agent AI development system with critic loops and spec verification
+```
+
+## Environment Variables Required
+```
+ANTHROPIC_KEY=your-claude-api-key
+OPENAI_KEY=your-gpt-api-key
+GITHUB_COPILOT_TOKEN=your-copilot-token
+```
+
+## Critic Loop Configuration
+```yaml
+critic_loop:
+  enabled: true
+  max_iterations: 5
+  quality_threshold: 90
+  
+  apply_to:
+    - write_spec
+    - design_system
+    - plan_tasks
+    - implement_feature
+    - review_code
+```
+
+## Specification Verification
+```yaml
+spec_verification:
+  enabled: true
+  apply_to:
+    - write_spec
+    - design_system
+    - implement_feature
+  
+  compliance_threshold: 90
+```
+
+## Model Assignment
+```yaml
+models:
+  claude: claude-3-5-sonnet
+  gpt: gpt-4-turbo
+  copilot: github-copilot
+```
+
+## Memory Configuration
+```yaml
+memory:
+  location: "./memory"
+  auto_update: true
+  files:
+    - repo_summary.md
+    - architecture.md
+    - decisions.md
+    - debug_log.md
+    - review_log.md
+    - verification.md
+    - qa.md
+    - devops.md
+    - docs.md
+    - release_notes.md
+```
+
+## Task Configuration
+```yaml
+tasks:
+  location: "./tasks"
+  naming_pattern: "{request_id}/{number:02d}_{name}.md"
+  auto_order_by_dependencies: true
+```
+
+## Execution Settings
+```yaml
+execution:
+  parallel_skills:
+    - generate_tests
+    - review_code
+  
+  timeout_per_skill: 300  # seconds
+  max_retries: 2
+  log_level: INFO
+```
+
+## Integration Hooks
+```yaml
+hooks:
+  before_workflow: null
+  after_skill: update_memory
+  after_critic_loop: log_iteration
+  after_verification: notify_status
+```
