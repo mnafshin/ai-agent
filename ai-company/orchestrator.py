@@ -8,9 +8,16 @@ import json
 import os
 import sys
 from pathlib import Path
-from typing import Dict, List, Any
+from typing import Dict, List, Any, Optional
 import subprocess
 from datetime import datetime
+
+# Lazy import - only use if memory is large
+try:
+    from tools.memory_manager import MemoryManager
+    MEMORY_MANAGER_AVAILABLE = True
+except ImportError:
+    MEMORY_MANAGER_AVAILABLE = False
 
 class AIOrchestratorConfig:
     """Configuration for the AI orchestrator."""
@@ -73,29 +80,115 @@ class AIOrchestratorConfig:
 class AIOrchestrator:
     """Main orchestrator for managing AI agents."""
     
-    def __init__(self, base_path: str):
+    def __init__(self, base_path: str, use_request_scope: bool = True, request_id: Optional[str] = None):
         self.base_path = Path(base_path)
         self.config = AIOrchestratorConfig()
-        self.memory = self._load_memory()
         self.execution_log = []
+        self.use_request_scope = use_request_scope
+        self.request_id = request_id
         
+        # Use memory manager for efficient access
+        if MEMORY_MANAGER_AVAILABLE:
+            self.memory_manager = MemoryManager(self.base_path / "memory")
+            self.use_manager = True
+        else:
+            self.use_manager = False
+            self.memory = self._load_memory()
+        
+        # Request-scoped memory (if applicable)
+        if use_request_scope and request_id:
+            self.request_memory_path = self.base_path / "tasks" / f"request_{request_id}" / "memory"
+            self.request_memory_path.mkdir(parents=True, exist_ok=True)
+            self.request_memory = self._load_request_memory()
+        else:
+            self.request_memory = None
+    
     def _load_memory(self) -> Dict[str, Any]:
-        """Load memory files."""
+        """Load memory files (fallback for systems without memory_manager)."""
         memory = {}
         memory_dir = self.base_path / "memory"
         
+        if not memory_dir.exists():
+            return memory
+        
         for md_file in memory_dir.glob("*.md"):
-            with open(md_file) as f:
-                memory[md_file.stem] = f.read()
+            if md_file.name == "index.yaml":
+                continue  # Skip index file
+            try:
+                with open(md_file) as f:
+                    memory[md_file.stem] = f.read()
+            except Exception as e:
+                print(f"⚠️  Warning: Could not load {md_file.name}: {e}")
         
         return memory
     
+    def _load_request_memory(self) -> Dict[str, Any]:
+        """Load request-scoped memory (small, isolated context)."""
+        memory = {}
+        
+        if not self.request_memory_path.exists():
+            return memory
+        
+        for md_file in self.request_memory_path.glob("*.md"):
+            try:
+                with open(md_file) as f:
+                    memory[md_file.stem] = f.read()
+            except Exception as e:
+                print(f"⚠️  Warning: Could not load request memory {md_file.name}: {e}")
+        
+        return memory
+    
+    def get_context_for_agent(self) -> str:
+        """Get memory context for agent (tokens-efficient with lazy loading)."""
+        if self.use_manager:
+            # Use efficient context from memory manager (summarized)
+            context = self.memory_manager.get_context_for_agent()
+        else:
+            # Fall back to recent entries from request or global memory
+            context = self._build_context_fallback()
+        
+        # Add request-specific context on top
+        if self.request_memory:
+            context += "\n\n# Request-Specific Context\n"
+            if "context" in self.request_memory:
+                context += self.request_memory["context"]
+        
+        return context
+    
+    def _build_context_fallback(self) -> str:
+        """Build context without memory manager (simple version)."""
+        context = "# Memory Context\n\n"
+        
+        # Add only last few entries from each memory file
+        for key in ["decisions", "debug_log", "review_log"]:
+            if key in self.memory:
+                lines = self.memory[key].split("\n")
+                # Get last 20 lines (approx 5 recent entries)
+                recent = lines[-20:]
+                context += f"## {key.replace('_', ' ').title()}\n"
+                context += "\n".join(recent) + "\n\n"
+        
+        return context
+    
     def _save_memory(self):
         """Save updated memory files."""
+        if self.use_manager:
+            # Memory manager handles persistence
+            return
+        
         memory_dir = self.base_path / "memory"
         
         for key, content in self.memory.items():
             with open(memory_dir / f"{key}.md", "w") as f:
+                f.write(content)
+    
+    def _save_request_memory(self):
+        """Save request-scoped memory."""
+        if not self.request_memory:
+            return
+        
+        for key, content in self.request_memory.items():
+            with open(self.request_memory_path / f"{key}.md", "w") as f:
                 f.write(content)
     
     def run_skill(self, skill_name: str, input_text: str) -> str:

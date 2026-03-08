@@ -170,7 +170,126 @@ spec_verification:
   compliance_threshold: 90  # Stricter/looser verification
 ```
 
+## Memory Management (Preventing Bottlenecks)
+
+As your project grows, memory files can become a bottleneck. The system provides efficient tools to prevent this.
+
+### 1. Request-Scoped Memory (Recommended)
+
+**Problem**: Loading a project's entire memory (500KB+) for a single 1-hour task wastes tokens and time.
+
+**Solution**: Each request has its own isolated memory containing only relevant context.
+
+```bash
+# Create request with isolated memory (5KB instead of 500KB)
+python orchestrator.py --request 001 --create-scope
+
+# This automatically:
+# - Creates tasks/request_001/memory/
+# - Pulls only relevant global context
+# - Keeps request isolated from other tasks
+```
+
+**Before**: Load 500KB memory per request  
+**After**: Load 5KB memory per request  
+**Savings**: 100x smaller context, faster execution, fewer token waste
+
+See: `docs/REQUEST_SCOPED_MEMORY.md` for details.
+
+### 2. Archive Old Entries (Monthly)
+
+**Problem**: `decisions.md`, `debug_log.md` grow unbounded.
+
+**Solution**: Archive entries older than 90 days to keep working memory lean.
+
+```bash
+# Run monthly to archive old entries
+python tools/archive_memory.py
+
+# View archive stats
+python tools/archive_memory.py --stats
+
+# Restore from archive if needed
+python tools/archive_memory.py --restore archive_decisions_2026_q1.md decisions.md
+```
+
+**Result**: Active memory files stay <50KB, archives available for historical reference.
+
+### 3. Consolidate Request Findings (After Tasks)
+
+**Problem**: Each request learns new things that might be useful globally.
+
+**Solution**: Consolidate important findings from request memory into global memory.
+
+```bash
+# After request_001 completes, consolidate findings
+python tools/consolidate_memory.py request_001
+
+# Or interactively review what to consolidate
+python tools/consolidate_memory.py request_001 --review
+
+# Findings merged into global memory, request archived
+```
+
+**Flow**:
+1. Request runs with isolated memory (5KB)
+2. Request learns new architecture decisions
+3. Run consolidate → findings merged into global decisions.md
+4. Request memory archived for historical reference
+
+### 4. Memory Manager (Automatic Optimization)
+
+If installed (`pip install pyyaml`), the system automatically optimizes memory access:
+
+```bash
+# View memory statistics
+python tools/memory_manager.py
+
+# Generate efficient context for agent
+# (does this automatically, summarized instead of full history)
+```
+
+**What it does**:
+- ✓ Lazy loads only needed entries
+- ✓ Caches frequently accessed files
+- ✓ Generates summaries instead of full history
+- ✓ Ready for SQLite backend (for 10,000+ entries)
+
+### Memory Scaling Diagram
+
+```
+Entries              Archive         Approach
+-------------------
+    < 1,000         (Recent)        → Request-scoped memory
+                                    → Lazy loading
+                                    → Memory manager
+    
+    1,000-5,000     (Recent)        → Archive rotation (90 days)
+                    (Old)           → Consolidate requests
+    
+    5,000+          (Recent)        → Memory index
+                    (Archived)      → SQLite backend (optional)
+                    (Historical)    → Full-text search
+```
+
 ## Troubleshooting
+
+### Memory growing too fast
+1. Run `python tools/archive_memory.py` monthly
+2. Check if consolidate is running after requests
+3. Run `python tools/memory_manager.py` to rebuild index
+
+### "Context too large" errors
+1. Use request-scoped memory: `--create-scope`
+2. Run consolidation and archival
+3. Check memory stats: `python tools/memory_manager.py`
+
+### "Module not found" for pyyaml
+1. Optional: `pip install pyyaml`
+   - Without it, system works but memory_manager unavailable
+2. Archive and consolidation tools still work
+
+
 
 ### "API key not found"
 ```bash

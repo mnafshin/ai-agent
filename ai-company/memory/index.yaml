@@ -1,0 +1,43 @@
+# Memory Index - Quick Lookup for Fast Searching
+# Generated automatically by memory_manager.py
+# DO NOT EDIT MANUALLY - use archive_memory.py for rotation
+
+metadata:
+  created: 2026-03-08
+  last_updated: 2026-03-08
+  total_decisions: 0
+  total_bugs: 0
+  total_reviews: 0
+  archive_threshold_days: 90
+  archive_prefix: "archive_"
+
+summaries:
+  decisions: "No architectural decisions recorded yet"
+  debug_log: "No issues logged yet"
+  review_log: "No code reviews recorded yet"
+  architecture: "Architecture undocumented"
+  tech_stack: "Tech stack undocumented"
+
+recent_decisions: []
+# Format: 
+# - date: YYYY-MM-DD, topic: "title", line: NNN, keywords: [key1, key2]
+
+recent_bugs: []
+# Format:
+# - date: YYYY-MM-DD, component: "service name", issue: "description", line: NNN
+# 
+recent_reviews: []
+# Format:
+# - date: YYYY-MM-DD, file: "path/to/file", score: 87, line: NNN
+
+searches:
+  # Cache for full-text search results (auto-populated)
+  last_search_term: null
+  last_search_results: []
+
+archives:
+  # Available archives for loading historical data
+  available: []
+  # Format:
+  # - name: "archive_decisions_2026_q1.md", entries: 25
+  # - name: "archive_debug_log_2026_q1.md", entries: 42
