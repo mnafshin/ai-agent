@@ -1,0 +1,513 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Agents: Building a Software Development Team</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <style>
+        .reveal h1, .reveal h2, .reveal h3 { text-transform: none; }
+        .reveal pre { width: 100%; font-size: 0.55em; }
+        .reveal code { padding: 2px 5px; background: rgba(255,255,255,0.1); }
+        .team-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; font-size: 0.8em; }
+        .team-box { background: rgba(0,150,200,0.2); padding: 15px; border-radius: 5px; }
+        .problem  { color: #ff6b6b; }
+        .solution { color: #51cf66; }
+        .metric   { color: #ffd43b; font-weight: bold; }
+        .cli-box  { background: #1e1e1e; padding: 15px; border-left: 3px solid #00d4ff; margin: 10px 0; }
+        .step     { background: rgba(100,200,255,0.1); padding: 10px; margin: 10px 0; border-radius: 3px; }
+        .provider-table { font-size: 0.62em; margin: 10px auto; border-collapse: collapse; }
+        .provider-table td, .provider-table th { padding: 7px 12px; border: 1px solid rgba(255,255,255,0.2); }
+        .provider-table th { color: #ffd43b; }
+        .badge-free    { background:#1d6a3e; color:#51cf66; border-radius:3px; padding:1px 5px; font-size:0.85em; }
+        .badge-private { background:#1a3a6a; color:#74c0fc; border-radius:3px; padding:1px 5px; font-size:0.85em; }
+        .badge-local   { background:#3a2a6a; color:#cc5de8; border-radius:3px; padding:1px 5px; font-size:0.85em; }
+    </style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+<!-- ── Title ──────────────────────────────────────────────────────────── -->
+<section>
+    <h1>AI Agents</h1>
+    <h3>Building a Software Development Team</h3>
+    <p style="color:#888; margin-top:40px;">Multi-agent systems for production-quality code</p>
+    <p style="color:#555; font-size:0.7em; margin-top:20px;">March 2026 · v3.0</p>
+</section>
+
+<!-- ── The Problem ─────────────────────────────────────────────────────── -->
+<section>
+    <h2>The Problem</h2>
+    <section>
+        <h3>Traditional AI Approach ❌</h3>
+        <pre><code>User Request → LLM → Code → Done</code></pre>
+        <div style="margin-top:40px; text-align:left; font-size:0.9em;">
+            <p><span class="problem">✗ Context Loss</span> — Forgets previous decisions</p>
+            <p><span class="problem">✗ Hallucination</span> — Plausible but wrong code</p>
+            <p><span class="problem">✗ No Verification</span> — Never checks against requirements</p>
+            <p><span class="problem">✗ Inconsistency</span> — Different results each run</p>
+            <p><span class="problem">✗ Data Risk</span> — Uncontrolled where your code goes</p>
+        </div>
+    </section>
+    <section>
+        <h3>Why It Fails</h3>
+        <ul style="font-size:0.9em; line-height:2;">
+            <li>Single model for all tasks (coding ≠ reviewing)</li>
+            <li>No reasoning phase before implementation</li>
+            <li>Output never verified against spec</li>
+            <li>No memory between runs</li>
+            <li>Hard-coded to one vendor — no compliance control</li>
+        </ul>
+    </section>
+</section>
+
+<!-- ── The Solution ────────────────────────────────────────────────────── -->
+<section>
+    <h2>The Solution</h2>
+    <section>
+        <h3>From Single Agent to Software Company ✓</h3>
+        <pre style="font-size:0.5em;"><code>User Request
+  ↓
+Product Team (requirements)
+  ↓ CRITIC LOOP + SPEC VERIFICATION
+Architecture Team (design)
+  ↓ CRITIC LOOP + SPEC VERIFICATION
+Development Team (implementation)
+  ↓ CRITIC LOOP + SPEC VERIFICATION
+QA Team (testing & review)
+  ↓ CRITIC LOOP + SPEC VERIFICATION
+DevOps Team (deployment)
+  ↓ CRITIC LOOP + SPEC VERIFICATION
+Docs Team (release notes)</code></pre>
+    </section>
+    <section>
+        <h3>How It Solves Problems</h3>
+        <div style="text-align:left; font-size:0.85em; line-height:2.2;">
+            <p><span class="solution">✓ Persistent Memory</span> — Decisions stored between runs</p>
+            <p><span class="solution">✓ Critic Loops</span> — Self-correction (max 5 iterations, 90/100 threshold)</p>
+            <p><span class="solution">✓ Spec Verification</span> — Every output checked against requirements</p>
+            <p><span class="solution">✓ Right Model per Task</span> — Claude for reasoning, GPT for generation</p>
+            <p><span class="solution">✓ Provider Flexibility</span> — Your cloud, local machine, or free GitHub tier</p>
+        </div>
+    </section>
+</section>
+
+<!-- ── 20 Skills ────────────────────────────────────────────────────────── -->
+<section>
+    <h2>20 Specialized Skills in 7 Teams</h2>
+    <div class="team-grid">
+        <div class="team-box"><strong>Product</strong><br>• Gather Requirements<br>• Write Specification</div>
+        <div class="team-box"><strong>Architecture</strong><br>• Analyze Repository<br>• Design System</div>
+        <div class="team-box"><strong>Development</strong><br>• Plan Tasks<br>• Implement Feature<br>• Refactor Code<br>• Fix Bugs</div>
+        <div class="team-box"><strong>QA</strong><br>• Generate Tests<br>• Debug Cycle<br>• Review Code</div>
+        <div class="team-box"><strong>DevOps</strong><br>• Configure CI/CD<br>• Deploy Application</div>
+        <div class="team-box"><strong>Docs</strong><br>• Update Documentation<br>• Write Release Notes</div>
+        <div class="team-box" style="grid-column:1/-1;"><strong>Control Layer</strong><br>• Critic (quality gates) &nbsp;•&nbsp; Verify (spec compliance)</div>
+    </div>
+</section>
+
+<!-- ── Multi-Provider Architecture ────────────────────────────────────── -->
+<section>
+    <h2>Multi-Provider Architecture</h2>
+    <section>
+        <h3>Strategy Pattern — 6 Backends</h3>
+        <table class="provider-table">
+            <tr>
+                <th>Provider</th><th>Env Var</th><th>Claude?</th><th>GPT?</th><th>Data Location</th>
+            </tr>
+            <tr>
+                <td><code>github_models</code></td><td><code>GITHUB_TOKEN</code></td>
+                <td>❌ (GPT fallback)</td><td>✅</td>
+                <td>Microsoft <span class="badge-free">free</span></td>
+            </tr>
+            <tr>
+                <td><code>anthropic</code></td><td><code>ANTHROPIC_KEY</code></td>
+                <td>✅</td><td>❌</td>
+                <td>Anthropic servers</td>
+            </tr>
+            <tr>
+                <td><code>openai</code></td><td><code>OPENAI_KEY</code></td>
+                <td>❌</td><td>✅</td>
+                <td>OpenAI servers</td>
+            </tr>
+            <tr>
+                <td><code>bedrock</code></td><td><code>AWS_ACCESS_KEY_ID</code></td>
+                <td>✅</td><td>❌</td>
+                <td>Your AWS account <span class="badge-private">private</span></td>
+            </tr>
+            <tr>
+                <td><code>vertex</code></td><td><code>GOOGLE_CLOUD_PROJECT</code></td>
+                <td>✅</td><td>Gemini</td>
+                <td>Your GCP project <span class="badge-private">private</span></td>
+            </tr>
+            <tr>
+                <td><code>local</code></td><td><code>LOCAL_LLM_URL</code></td>
+                <td>❌*</td><td>❌*</td>
+                <td>Your machine <span class="badge-local">100% offline</span></td>
+            </tr>
+        </table>
+        <p style="font-size:0.65em; color:#888;">* Local serves whatever your server has: DeepSeek, Llama, Mistral, Qwen…</p>
+    </section>
+
+    <section>
+        <h3>Auto-Discovery Priority</h3>
+        <pre style="font-size:0.52em;"><code># Resolution order (automatic — first available wins):
+anthropic → bedrock → vertex → openai → local → github_models
+
+# Force a specific provider for ALL skills:
+LLM_PROVIDER=bedrock   # in .env</code></pre>
+        <p style="margin-top:25px; font-size:0.85em;">
+            Set <strong>one or many</strong> providers. The registry discovers what's available
+            and routes each skill to the best backend automatically.
+        </p>
+    </section>
+
+    <section>
+        <h3>Smart Tier-Based Fallback</h3>
+        <p style="font-size:0.85em; margin-bottom:15px;">When a model isn't available, the registry matches by <strong>tier</strong>, not blindly downgrades:</p>
+        <pre style="font-size:0.52em;"><code># Only GITHUB_TOKEN set (no Claude key):
+gather_requirements (claude/balanced) → github_models/gpt-4o
+analyze_repo        (claude/fast)     → github_models/gpt-4o-mini
+review_code         (claude/powerful) → github_models/Llama-3.1-405B  ← tier-matched!
+
+# With LOCAL_LLM_URL=http://localhost:11434/v1:
+review_code         (claude/powerful) → local/deepseek-v2.5:latest     ← local first!</code></pre>
+    </section>
+
+    <section>
+        <h3>Data Privacy Decision Tree</h3>
+        <div style="font-size:0.82em; text-align:left; line-height:2.3;">
+            <p>🏢 <strong>Company data / NDA code?</strong></p>
+            <p style="padding-left:30px;">→ Use <code>bedrock</code> or <code>vertex</code> (stays in your cloud)<br>
+               → Or <code>local</code> (stays on your machine)</p>
+            <p>🔓 <strong>Open source / personal projects?</strong></p>
+            <p style="padding-left:30px;">→ <code>github_models</code> is free and works immediately</p>
+            <p>🧠 <strong>Need real Claude for best reasoning?</strong></p>
+            <p style="padding-left:30px;">→ <code>anthropic</code> (direct) or <code>bedrock</code>/<code>vertex</code> (private)</p>
+        </div>
+    </section>
+</section>
+
+<!-- ── Local LLMs ──────────────────────────────────────────────────────── -->
+<section>
+    <h2>Local LLMs — 100% Offline</h2>
+    <section>
+        <h3>Works With Any OpenAI-Compatible Server</h3>
+        <pre style="font-size:0.52em;"><code># Ollama (most popular)
+LOCAL_LLM_URL=http://localhost:11434/v1
+
+# LM Studio
+LOCAL_LLM_URL=http://localhost:1234/v1
+
+# vLLM / llama.cpp / LocalAI / text-gen-webui
+LOCAL_LLM_URL=http://localhost:8000/v1
+
+# Explicitly list models (or let the provider auto-discover):
+LOCAL_LLM_MODELS=deepseek-coder-v2:latest,llama3.1:70b,codestral:latest</code></pre>
+    </section>
+    <section>
+        <h3>Example: DeepSeek on Ollama</h3>
+        <pre style="font-size:0.52em;"><code># 1. Pull and run DeepSeek locally
+ollama pull deepseek-coder-v2:latest
+ollama serve
+
+# 2. Add to .env — that's it
+LOCAL_LLM_URL=http://localhost:11434/v1
+LLM_PROVIDER=local        # optional: force all skills to use local
+
+# 3. Agent auto-discovers models
+agent status
+#  ✅ local   http://localhost:11434/v1 (3 models available)
+#  ── github_models  GITHUB_TOKEN (fallback)
+
+agent review < myfile.py   # runs through deepseek locally</code></pre>
+        <p style="font-size:0.8em; margin-top:15px; color:#51cf66;">Zero external network calls. Data never leaves your machine.</p>
+    </section>
+    <section>
+        <h3>Supported Local Models</h3>
+        <div style="font-size:0.78em; text-align:left; line-height:1.9;">
+            <p><strong>Code-focused:</strong> DeepSeek Coder V2, Codestral, StarCoder2, Code Llama</p>
+            <p><strong>General reasoning:</strong> Llama 3.1 (8B / 70B / 405B), Mixtral 8×22B</p>
+            <p><strong>Multilingual + code:</strong> Qwen 2.5 Coder 32B, Qwen 2.5 72B</p>
+            <p><strong>Lightweight / fast:</strong> Phi-3 (14B), Gemma 2 (9B), Mistral 7B</p>
+        </div>
+        <p style="margin-top:20px; font-size:0.75em; color:#888;">
+            Family + tier auto-detected from model name (e.g. "70b" → powerful, "3b" → fast)
+        </p>
+    </section>
+</section>
+
+<!-- ── Critic Loop ─────────────────────────────────────────────────────── -->
+<section>
+    <h2>The Critic Loop</h2>
+    <section>
+        <h3>Self-Correction in Action</h3>
+        <pre style="font-size:0.5em;"><code>Generate Result
+    ↓
+Run Critic (best available model)
+    ↓
+Score &lt; 90? → Improve Result → Loop (max 5)
+    ↓
+Score >= 90? → Accept and Move Forward
+    ↓
+Verify Against Spec</code></pre>
+    </section>
+    <section>
+        <h3>Real Example: Architecture Design</h3>
+        <div style="text-align:center; font-size:0.85em; line-height:2.5;">
+            <p><strong>Iteration 1:</strong> Score 62 ❌ Missing validation layer</p>
+            <p><strong>Iteration 2:</strong> Score 85 ❌ Inconsistent naming</p>
+            <p><strong>Iteration 3:</strong> Score 94 ✓ ACCEPTED</p>
+        </div>
+        <p style="margin-top:40px; font-size:0.8em; color:#888;">Different reasoning pass prevents reinforcing mistakes</p>
+    </section>
+</section>
+
+<!-- ── Memory ──────────────────────────────────────────────────────────── -->
+<section>
+    <h2>Memory System</h2>
+    <section>
+        <h3>Persistent Context</h3>
+        <pre><code>memory/
+  ├── decisions.md      # Architectural decisions
+  ├── architecture.md   # System design
+  ├── debug_log.md      # Issues found & fixes
+  └── review_log.md     # Code quality tracking</code></pre>
+        <p style="margin-top:30px; font-size:0.85em;">Each agent reads memory before acting → executes → updates memory</p>
+    </section>
+    <section>
+        <h3>Task Ordering</h3>
+        <pre><code>tasks/request_001/
+  ├── 01_gather_requirements.md
+  ├── 02_write_spec.md
+  ├── 03_design_architecture.md
+  ├── 04_implement_feature.md
+  └── 05_generate_tests.md</code></pre>
+        <p style="margin-top:30px; font-size:0.85em;">Sequential numbering prevents forgetting tasks</p>
+    </section>
+</section>
+
+<!-- ── CLI ─────────────────────────────────────────────────────────────── -->
+<section>
+    <h2>CLI Interface</h2>
+    <section>
+        <h3>Easy to Use</h3>
+        <div class="cli-box"><code>$ agent execute task.md</code></div>
+        <p style="font-size:0.85em; margin-top:15px;">Runs all 20 agents with automatic memory consolidation</p>
+        <div class="cli-box" style="margin-top:20px;"><code>$ gh pr diff | agent review</code></div>
+        <p style="font-size:0.85em; margin-top:15px;">Review PR before merging — uses best available model</p>
+        <div class="cli-box" style="margin-top:20px;"><code>$ agent status</code></div>
+        <p style="font-size:0.85em; margin-top:15px;">Shows all providers, models, auth status</p>
+    </section>
+    <section>
+        <h3>CI/CD Integration</h3>
+        <div class="step"><strong>GitHub Actions:</strong><br>
+            <code>gh pr diff | agent review --format json | jq '.results.issues'</code></div>
+        <div class="step"><strong>GitLab CI:</strong><br>
+            <code>glab mr diff | agent review --verbose</code></div>
+        <div class="step"><strong>Git Pre-Push Hook:</strong><br>
+            <code>git diff HEAD~1 | agent review || exit 1</code></div>
+    </section>
+</section>
+
+<!-- ── Model Selection ────────────────────────────────────────────────── -->
+<section>
+    <h2>Model Selection per Skill</h2>
+    <table class="provider-table">
+        <tr><th>Skill</th><th>Preferred Model</th><th>Tier</th><th>Why</th></tr>
+        <tr><td>gather_requirements</td><td>Claude 3.5 Sonnet</td><td>balanced</td><td>Nuanced language</td></tr>
+        <tr><td>write_spec</td><td>Claude 3 Opus</td><td>powerful</td><td>High-stakes accuracy</td></tr>
+        <tr><td>analyze_repo</td><td>Claude 3.5 Haiku</td><td>fast</td><td>Quick scan</td></tr>
+        <tr><td>implement_feature</td><td>Claude 3.5 Sonnet</td><td>balanced</td><td>Code generation</td></tr>
+        <tr><td>review_code</td><td>Claude 3 Opus</td><td>powerful</td><td>Thorough analysis</td></tr>
+        <tr><td>generate_tests</td><td>GPT-4o</td><td>balanced</td><td>Test generation</td></tr>
+        <tr><td>configure_ci</td><td>GPT-4o</td><td>balanced</td><td>YAML / pipelines</td></tr>
+        <tr><td>critic</td><td>Claude 3.5 Haiku</td><td>fast</td><td>Fast eval loop</td></tr>
+    </table>
+    <p style="margin-top:20px; font-size:0.75em; color:#888;">
+        If Claude isn't available, each skill falls back to a model of the same <strong>tier</strong> from the active provider.
+    </p>
+</section>
+
+<!-- ── Setup ───────────────────────────────────────────────────────────── -->
+<section>
+    <h2>Setup</h2>
+    <section>
+        <h3>One-Command Install</h3>
+        <pre style="font-size:0.52em;"><code># Windows
+.\setup.ps1
+
+# Linux / macOS
+bash setup.sh</code></pre>
+        <p style="font-size:0.85em; margin-top:15px;">Creates venv, installs deps, registers <code>agent</code> CLI command</p>
+    </section>
+    <section>
+        <h3>Configure Providers in .env</h3>
+        <pre style="font-size:0.48em;"><code># Pick ONE or more — agent auto-discovers what's set
+
+# Option 1: Free (GitHub PAT, GPT-4o only)
+GITHUB_TOKEN=ghp_your-pat-here
+
+# Option 2: Real Claude (direct Anthropic)
+ANTHROPIC_KEY=sk-ant-your-key
+
+# Option 3: Real Claude (stays in your AWS — recommended for enterprise)
+AWS_ACCESS_KEY_ID=AKIA...
+AWS_SECRET_ACCESS_KEY=...
+AWS_REGION=eu-west-1
+
+# Option 4: Real Claude + Gemini (stays in your GCP)
+GOOGLE_CLOUD_PROJECT=my-project-id
+
+# Option 5: 100% offline (Ollama, LM Studio, DeepSeek, etc.)
+LOCAL_LLM_URL=http://localhost:11434/v1
+
+# Force one provider for all skills (optional):
+# LLM_PROVIDER=bedrock</code></pre>
+    </section>
+    <section>
+        <h3>Verify Everything Works</h3>
+        <pre style="font-size:0.52em;"><code>$ agent status
+
+✅ Auth: bedrock (AWS Bedrock — Claude in your AWS)
+  ── anthropic    no ANTHROPIC_KEY set
+  ✅ bedrock      AWS Bedrock → eu-west-1 (data stays in your AWS account)
+  ── vertex       no GOOGLE_CLOUD_PROJECT set
+  ── openai       no OPENAI_KEY set
+  ── local        no LOCAL_LLM_URL set
+  ── github_models  GITHUB_TOKEN → fallback
+
+$ echo "def foo(): pass" | agent review</code></pre>
+    </section>
+</section>
+
+<!-- ── Example Workflow ────────────────────────────────────────────────── -->
+<section>
+    <h2>Example: Building a REST API</h2>
+    <section>
+        <h3>Request: "Add user authentication"</h3>
+        <pre style="font-size:0.5em;"><code>$ agent execute &lt;&lt; EOF &gt; api_result.json
+Feature: Add user authentication
+Requirements:
+  - OAuth2 support
+  - Rate limiting
+  - Audit logging
+  - Database integration
+EOF</code></pre>
+    </section>
+    <section>
+        <h3>Execution Flow</h3>
+        <div style="font-size:0.8em; line-height:2; text-align:left;">
+            <p>1️⃣ <strong>Product:</strong> Clarify requirements → Write spec</p>
+            <p>2️⃣ <strong>Architecture:</strong> Analyze codebase → Design system</p>
+            <p>3️⃣ <strong>Development:</strong> Plan tasks → Implement features</p>
+            <p>4️⃣ <strong>QA:</strong> Generate tests → Review code</p>
+            <p>5️⃣ <strong>DevOps:</strong> Setup CI/CD → Deploy</p>
+            <p>6️⃣ <strong>Docs:</strong> Update docs → Release notes</p>
+            <p style="margin-top:20px; color:#51cf66;">✓ All quality gates passed · Audit trail in memory</p>
+        </div>
+    </section>
+</section>
+
+<!-- ── Best Practices ──────────────────────────────────────────────────── -->
+<section>
+    <h2>Best Practices</h2>
+    <section>
+        <h3>✅ DO</h3>
+        <ul style="font-size:0.85em; line-height:2.2; text-align:left;">
+            <li>Separate concerns — reasoning, coding, reviewing are different tasks</li>
+            <li>Use critic loops — never ship without 90/100 quality score</li>
+            <li>Verify specs — always validate against requirements</li>
+            <li>Persist memory — store architectural decisions</li>
+            <li>Choose the right provider for your data sensitivity</li>
+            <li>Use <code>LLM_PROVIDER=local</code> for confidential codebases</li>
+        </ul>
+    </section>
+    <section>
+        <h3>❌ DON'T</h3>
+        <ul style="font-size:0.85em; line-height:2.2; text-align:left;">
+            <li>Use the same model for all tasks</li>
+            <li>Trust outputs without verification</li>
+            <li>Hard-code a single LLM vendor</li>
+            <li>Ship first output without critic loop</li>
+            <li>Send company code to external APIs without checking your data policy</li>
+        </ul>
+    </section>
+</section>
+
+<!-- ── When to Use ─────────────────────────────────────────────────────── -->
+<section>
+    <h2>When to Use This</h2>
+    <table class="provider-table" style="font-size:0.7em;">
+        <tr><th>Tool</th><th>Best For</th><th>Strength</th></tr>
+        <tr><td>Claude Code</td><td>Quick prototypes</td><td>Speed</td></tr>
+        <tr><td>Cursor</td><td>Interactive development</td><td>Human control</td></tr>
+        <tr><td>LangGraph</td><td>New autonomous systems</td><td>Framework foundation</td></tr>
+        <tr style="color:#51cf66;"><td><strong>In-House (This)</strong></td><td><strong>Repeated workflows · Private data</strong></td><td><strong>Production quality + compliance</strong></td></tr>
+    </table>
+    <p style="margin-top:30px; font-size:0.85em;">
+        Use when building similar products repeatedly <em>and</em> when data privacy matters.<br>
+        <span class="metric">Cost pays for itself by project #4</span>
+    </p>
+</section>
+
+<!-- ── Key Takeaways ───────────────────────────────────────────────────── -->
+<section>
+    <h2>Key Takeaways</h2>
+    <div style="text-align:left; font-size:0.85em; line-height:2.4;">
+        <p><span class="metric">1. Multi-agent > Single agent</span><br>Separate concerns: reasoning ≠ coding ≠ reviewing</p>
+        <p><span class="metric">2. Quality gates matter</span><br>Critic loops + spec verification catch hallucinations</p>
+        <p><span class="metric">3. Memory is critical</span><br>Persistent context prevents decisions from being forgotten</p>
+        <p><span class="metric">4. Provider flexibility = compliance</span><br>AWS Bedrock / GCP Vertex / local = data stays with you</p>
+        <p><span class="metric">5. One config, six backends</span><br>GITHUB_TOKEN → free start; swap to Bedrock when you go to prod</p>
+    </div>
+</section>
+
+<!-- ── Call to Action ──────────────────────────────────────────────────── -->
+<section>
+    <h2>Ready to Try It?</h2>
+    <div style="margin-top:40px;">
+        <h3 style="color:#51cf66; margin-bottom:30px;">Get Started in 3 Steps</h3>
+        <div class="step" style="text-align:left;">
+            <strong>1. Install:</strong><br>
+            <code>.\setup.ps1</code> &nbsp; or &nbsp; <code>bash setup.sh</code>
+        </div>
+        <div class="step" style="text-align:left;">
+            <strong>2. Configure .env</strong> — set at least one provider key:<br>
+            <code>GITHUB_TOKEN=ghp_…</code> &nbsp;(free, works immediately)
+        </div>
+        <div class="step" style="text-align:left;">
+            <strong>3. Execute:</strong> <code>agent execute task.md</code>
+        </div>
+        <p style="margin-top:30px; font-size:0.8em; color:#888;">
+            Full docs: <code style="color:#fff;">agent_core/docs/</code> &nbsp;·&nbsp;
+            Config: <code style="color:#fff;">agent_core/config/models.yaml</code>
+        </p>
+    </div>
+</section>
+
+<!-- ── Final ───────────────────────────────────────────────────────────── -->
+<section style="background:linear-gradient(135deg,#667eea 0%,#764ba2 100%);">
+    <h1>The Future</h1>
+    <h3>Multi-Agent Systems · Provider-Agnostic · Production Ready</h3>
+    <ul style="margin-top:50px; font-size:1em; line-height:2.5;">
+        <li>✓ Catch hallucinations before they ship</li>
+        <li>✓ Scale to any project size</li>
+        <li>✓ Full audit trail of decisions</li>
+        <li>✓ Data stays where you need it</li>
+        <li>✓ Works offline with local LLMs</li>
+    </ul>
+</section>
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script>
+    Reveal.initialize({
+        hash: true, transition: 'slide', controls: true, progress: true,
+        center: true, slideNumber: true, keyboard: true, touch: true,
+        width: '100%', height: '100%', margin: 0.08, minScale: 0.2, maxScale: 2.0,
+    });
+</script>
+</body>
+</html>

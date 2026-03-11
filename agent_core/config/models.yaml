@@ -1,0 +1,151 @@
+# ═══════════════════════════════════════════════════════════════════════════
+# Model Catalog & Skill Assignments
+# ═══════════════════════════════════════════════════════════════════════════
+#
+# The ModelRouter automatically discovers available providers and resolves
+# which backend serves each model. This file documents the full catalog
+# and controls skill → model assignments.
+#
+# Provider priority (automatic): anthropic > bedrock > vertex > openai > github_models
+# Override with: LLM_PROVIDER=bedrock  (in .env)
+
+# ─────────────────────────────────────────────────────────────────────────
+# Available models per provider
+# ─────────────────────────────────────────────────────────────────────────
+
+providers:
+
+  # ── GitHub Models API (free, GitHub PAT) ────────────────────────────────
+  github_models:
+    env: GITHUB_TOKEN
+    base_url: https://models.inference.ai.azure.com
+    data_location: Microsoft
+    models:
+      - { id: "gpt-4o",                          family: gpt,     tier: balanced, cost: { input: 0, output: 0 } }
+      - { id: "gpt-4o-mini",                     family: gpt,     tier: fast,     cost: { input: 0, output: 0 } }
+      - { id: "Meta-Llama-3.1-405B-Instruct",    family: llama,   tier: powerful }
+      - { id: "Meta-Llama-3.1-70B-Instruct",     family: llama,   tier: balanced }
+      - { id: "Meta-Llama-3.1-8B-Instruct",      family: llama,   tier: fast }
+      - { id: "Mistral-large-2407",               family: mistral, tier: balanced }
+      - { id: "Mistral-Nemo",                     family: mistral, tier: fast }
+
+  # ── Direct Anthropic API ────────────────────────────────────────────────
+  anthropic:
+    env: ANTHROPIC_KEY
+    base_url: https://api.anthropic.com
+    data_location: Anthropic (US)
+    models:
+      - { id: "claude-3-5-haiku-20241022",  family: claude, tier: fast,     cost: { input: 0.80, output: 4.00 } }
+      - { id: "claude-3-5-sonnet-20241022", family: claude, tier: balanced, cost: { input: 3.00, output: 15.0 } }
+      - { id: "claude-3-opus-20240229",     family: claude, tier: powerful, cost: { input: 15.0, output: 75.0 } }
+
+  # ── Direct OpenAI API ──────────────────────────────────────────────────
+  openai:
+    env: OPENAI_KEY
+    base_url: https://api.openai.com
+    data_location: OpenAI (US)
+    models:
+      - { id: "gpt-4o",        family: gpt, tier: balanced, cost: { input: 2.50, output: 10.0 } }
+      - { id: "gpt-4o-mini",   family: gpt, tier: fast,     cost: { input: 0.15, output: 0.60 } }
+      - { id: "gpt-4-turbo",   family: gpt, tier: balanced, cost: { input: 10.0, output: 30.0 } }
+      - { id: "o1",            family: gpt, tier: powerful,  cost: { input: 15.0, output: 60.0 } }
+      - { id: "o1-mini",       family: gpt, tier: balanced,  cost: { input: 3.00, output: 12.0 } }
+      - { id: "o3-mini",       family: gpt, tier: fast,      cost: { input: 1.10, output: 4.40 } }
+
+  # ── AWS Bedrock (data stays in your AWS account) ───────────────────────
+  bedrock:
+    env: AWS_ACCESS_KEY_ID
+    data_location: Your AWS account
+    models:
+      - { id: "anthropic.claude-3-5-haiku-20241022-v1:0",  family: claude,  tier: fast }
+      - { id: "anthropic.claude-3-5-sonnet-20241022-v2:0", family: claude,  tier: balanced }
+      - { id: "anthropic.claude-3-opus-20240229-v1:0",     family: claude,  tier: powerful }
+      - { id: "anthropic.claude-3-sonnet-20240229-v1:0",   family: claude,  tier: balanced }
+      - { id: "anthropic.claude-3-haiku-20240307-v1:0",    family: claude,  tier: fast }
+      - { id: "meta.llama3-1-405b-instruct-v1:0",          family: llama,   tier: powerful }
+      - { id: "meta.llama3-1-70b-instruct-v1:0",           family: llama,   tier: balanced }
+      - { id: "meta.llama3-1-8b-instruct-v1:0",            family: llama,   tier: fast }
+      - { id: "mistral.mistral-large-2407-v1:0",           family: mistral, tier: balanced }
+
+  # ── GCP Vertex AI (data stays in your GCP project) ────────────────────
+  vertex:
+    env: GOOGLE_CLOUD_PROJECT
+    data_location: Your GCP project
+    models:
+      - { id: "claude-3-5-haiku@20241022",     family: claude, tier: fast }
+      - { id: "claude-3-5-sonnet-v2@20241022", family: claude, tier: balanced }
+      - { id: "claude-3-opus@20240229",        family: claude, tier: powerful }
+      - { id: "claude-3-sonnet@20240229",      family: claude, tier: balanced }
+      - { id: "claude-3-haiku@20240307",       family: claude, tier: fast }
+      - { id: "gemini-1.5-pro",                family: gemini, tier: powerful }
+      - { id: "gemini-1.5-flash",              family: gemini, tier: fast }
+      - { id: "gemini-2.0-flash",              family: gemini, tier: fast }
+
+  # ── Local / Self-hosted LLM (100% offline, data never leaves your machine)
+  local:
+    env: LOCAL_LLM_URL
+    data_location: Your machine (100% offline)
+    note: >
+      Models are auto-discovered from the server's /models endpoint,
+      or set explicitly via LOCAL_LLM_MODELS env var.
+      Works with Ollama, LM Studio, vLLM, llama.cpp, LocalAI, DeepSeek, etc.
+    example_models:
+      # DeepSeek (coding specialist)
+      - { id: "deepseek-coder-v2:latest",       family: deepseek, tier: balanced }
+      - { id: "deepseek-v2.5:latest",           family: deepseek, tier: balanced }
+      # Llama
+      - { id: "llama3.1:70b",                   family: llama,    tier: powerful }
+      - { id: "llama3.1:8b",                    family: llama,    tier: fast }
+      # Mistral / Codestral
+      - { id: "codestral:latest",               family: mistral,  tier: balanced }
+      - { id: "mixtral:8x22b",                  family: mistral,  tier: powerful }
+      # Qwen (good multilingual + code)
+      - { id: "qwen2.5-coder:32b",              family: qwen,     tier: balanced }
+      - { id: "qwen2.5:72b",                    family: qwen,     tier: powerful }
+      # Phi (small + fast)
+      - { id: "phi3:14b",                       family: phi,      tier: fast }
+
+
+# ─────────────────────────────────────────────────────────────────────────
+# Skill → Model Assignments
+# ─────────────────────────────────────────────────────────────────────────
+# These use canonical model IDs from the Anthropic/OpenAI catalogs.
+# The ProviderRegistry maps them to the correct provider-specific ID
+# at runtime (e.g. claude-3-5-sonnet → anthropic.claude-3-5-sonnet on Bedrock).
+
+skill_models:
+  # Product
+  gather_requirements: "claude-3-5-sonnet-20241022"       # nuanced understanding
+  write_spec:          "claude-3-opus-20240229"           # highest-stakes doc
+  # Architecture
+  analyze_repo:        "claude-3-5-haiku-20241022"        # fast scan
+  design_system:       "claude-3-opus-20240229"           # complex design reasoning
+  # Development
+  plan_tasks:          "claude-3-5-sonnet-20241022"
+  implement_feature:   "claude-3-5-sonnet-20241022"       # code generation
+  refactor_code:       "claude-3-5-sonnet-20241022"       # code transformation
+  fix_bug:             "claude-3-5-sonnet-20241022"       # debugging
+  # QA
+  generate_tests:      "gpt-4o"                           # test generation
+  debug_cycle:         "claude-3-5-sonnet-20241022"       # error reasoning
+  review_code:         "claude-3-opus-20240229"           # thorough review
+  # DevOps
+  configure_ci:        "gpt-4o"                           # YAML / pipeline config
+  deploy_app:          "gpt-4o"                           # deployment scripting
+  # Documentation
+  update_docs:         "gpt-4o"                           # clear prose
+  write_release_notes: "gpt-4o"                           # summarisation
+  # Control layer
+  critic:              "claude-3-5-haiku-20241022"        # fast eval loop
+  verify_spec:         "claude-3-5-sonnet-20241022"       # requirement checking
+
+# ─────────────────────────────────────────────────────────────────────────
+# Cross-family fallback rules
+# ─────────────────────────────────────────────────────────────────────────
+# When the desired model family isn't available, the ProviderRegistry
+# automatically falls back to a compatible model.  These are the defaults:
+#
+#   claude/fast      → gpt-4o-mini    (github_models)
+#   claude/balanced  → gpt-4o         (github_models)
+#   claude/powerful  → gpt-4o         (github_models)
+#   gpt/*            → served directly by github_models or openai

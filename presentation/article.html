@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stop Prompting. Start Deploying an AI Dev Team.</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/theme/black.min.css">
+    <style>
+        :root {
+            --green:  #51cf66;
+            --red:    #ff6b6b;
+            --yellow: #ffd43b;
+            --blue:   #74c0fc;
+            --purple: #cc5de8;
+            --dim:    rgba(255,255,255,0.55);
+        }
+        .reveal h1, .reveal h2, .reveal h3, .reveal h4 { text-transform: none; }
+        .reveal pre  { width: 100%; font-size: 0.52em; box-shadow: none; }
+        .reveal code { padding: 2px 6px; background: rgba(255,255,255,0.1); border-radius: 3px; }
+        .reveal blockquote {
+            background: rgba(255,255,255,0.06);
+            border-left: 4px solid var(--yellow);
+            padding: 14px 20px;
+            font-style: normal;
+            font-size: 0.9em;
+            width: 90%;
+            margin: 20px auto;
+        }
+
+        /* ── layout helpers ─────────────────── */
+        .cols  { display: flex; gap: 28px; align-items: flex-start; }
+        .col   { flex: 1; }
+        .card  { background: rgba(255,255,255,0.07); border-radius: 8px; padding: 18px 22px; margin: 10px 0; }
+        .card-green  { border-left: 4px solid var(--green); }
+        .card-red    { border-left: 4px solid var(--red); }
+        .card-yellow { border-left: 4px solid var(--yellow); }
+        .card-blue   { border-left: 4px solid var(--blue); }
+        .card-purple { border-left: 4px solid var(--purple); }
+
+        /* ── badges ─────────────────────────── */
+        .badge { border-radius: 4px; padding: 2px 8px; font-size: 0.75em; font-weight: bold; margin-left: 6px; }
+        .badge-free    { background:#1d6a3e; color:var(--green); }
+        .badge-private { background:#1a3a6a; color:var(--blue); }
+        .badge-offline { background:#3a2a6a; color:var(--purple); }
+        .badge-warn    { background:#5a3a00; color:var(--yellow); }
+
+        /* ── big number callouts ─────────────── */
+        .big-num { font-size: 3.2em; font-weight: 900; line-height: 1; }
+        .big-label { font-size: 0.8em; color: var(--dim); margin-top: 4px; }
+
+        /* ── colour utilities ────────────────── */
+        .green  { color: var(--green); }
+        .red    { color: var(--red); }
+        .yellow { color: var(--yellow); }
+        .blue   { color: var(--blue); }
+        .purple { color: var(--purple); }
+        .dim    { color: var(--dim); }
+
+        /* ── comparison table ────────────────── */
+        .cmp { border-collapse: collapse; font-size: 0.72em; width: 100%; margin: 16px 0; }
+        .cmp td, .cmp th { padding: 9px 14px; border: 1px solid rgba(255,255,255,0.15); text-align: left; }
+        .cmp th { color: var(--yellow); background: rgba(255,255,255,0.05); }
+        .cmp tr.hi td { color: var(--green); font-weight: bold; }
+
+        /* ── flow diagram ────────────────────── */
+        .flow { display: flex; flex-direction: column; gap: 0; font-size: 0.78em; width: fit-content; margin: 0 auto; }
+        .flow-box  { background: rgba(100,200,255,0.12); border: 1px solid rgba(100,200,255,0.3);
+                     border-radius: 6px; padding: 8px 24px; text-align: center; }
+        .flow-arrow { text-align: center; color: var(--dim); font-size: 1.3em; line-height: 1.2; }
+        .flow-branch { display: flex; gap: 20px; justify-content: center; }
+        .flow-box.good { background: rgba(81,207,102,0.15); border-color: rgba(81,207,102,0.4); }
+        .flow-box.bad  { background: rgba(255,107,107,0.12); border-color: rgba(255,107,107,0.35); }
+
+        /* ── tier pill ───────────────────────── */
+        .tier-fast    { background:#1d6a3e; color:var(--green);  border-radius:4px; padding:1px 8px; font-size:0.8em; }
+        .tier-balanced{ background:#1a3a6a; color:var(--blue);   border-radius:4px; padding:1px 8px; font-size:0.8em; }
+        .tier-powerful{ background:#5a2a6a; color:var(--purple); border-radius:4px; padding:1px 8px; font-size:0.8em; }
+
+        /* ── team grid ───────────────────────── */
+        .team-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; font-size: 0.75em; }
+        .team-box  { background: rgba(0,150,200,0.15); border-radius: 6px; padding: 12px 15px; line-height: 1.7; }
+        .team-box strong { color: var(--yellow); display: block; margin-bottom: 4px; }
+
+        /* ── progress bar ────────────────────── */
+        .progress-bar { background: rgba(255,255,255,0.1); border-radius: 20px; height: 10px; margin: 6px 0 14px; overflow: hidden; }
+        .progress-fill { height: 100%; border-radius: 20px; transition: width 0.4s; }
+    </style>
+</head>
+<body>
+<div class="reveal"><div class="slides">
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     1. TITLE
+════════════════════════════════════════════════════════════════ -->
+<section data-background="linear-gradient(135deg,#0f0c29,#302b63,#24243e)">
+    <h1 style="font-size:1.9em; line-height:1.2;">
+        Stop Prompting.<br>
+        <span class="green">Start Deploying<br>an AI Dev Team.</span>
+    </h1>
+    <p style="margin-top:30px; color:var(--dim); font-size:0.85em;">
+        How a multi-agent stack can 10× developer efficiency<br>— without burning your token budget.
+    </p>
+    <p style="margin-top:40px; font-size:0.65em; color:#555;">March 2026 &nbsp;·&nbsp; v3.0</p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     2. THE BROKEN WAY
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>The Way Most Devs Use AI Today</h2>
+    <div style="margin: 30px 0; font-size: 1.1em; line-height: 2.4; text-align:center;">
+        <span class="dim">Open chat</span>
+        &nbsp;→&nbsp;
+        <span class="dim">paste code</span>
+        &nbsp;→&nbsp;
+        <span class="dim">get output</span>
+        &nbsp;→&nbsp;
+        <span class="red">hope for the best</span>
+    </div>
+    <div class="cols" style="margin-top:20px;">
+        <div class="card card-red" style="flex:1; font-size:0.82em; line-height:2.1;">
+            <span class="red">✗ No memory</span><br>
+            <span class="red">✗ No verification</span><br>
+            <span class="red">✗ No quality gate</span><br>
+            <span class="red">✗ Data goes… somewhere</span><br>
+            <span class="red">✗ Same expensive model for everything</span>
+        </div>
+        <div style="flex:1; display:flex; align-items:center; justify-content:center;">
+            <div style="text-align:center;">
+                <div class="big-num red">~40%</div>
+                <div class="big-label">of AI-generated code contains<br>bugs or spec violations*</div>
+                <div style="margin-top:30px;">
+                    <div class="big-num yellow">0</div>
+                    <div class="big-label">quality gates in the typical<br>chat-based workflow</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <p style="font-size:0.5em; color:#444; margin-top:20px;">* Industry estimates on unverified LLM output</p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     3. THE BIG IDEA
+════════════════════════════════════════════════════════════════ -->
+<section data-background="rgba(0,150,200,0.08)">
+    <h2>The Big Idea</h2>
+    <blockquote style="font-size:1.1em; margin: 30px auto;">
+        Don't prompt a chatbot.<br>
+        <strong class="green">Deploy a software company.</strong>
+    </blockquote>
+    <p style="font-size:0.85em; color:var(--dim); margin-top:10px;">
+        20 specialized agents · 7 teams · each using the right model for its job
+    </p>
+    <div class="cols" style="margin-top:28px; font-size:0.78em;">
+        <div class="card card-red col">
+            <strong class="red">Before</strong><br><br>
+            One LLM<br>One giant prompt<br>First output ships<br>No memory<br>No feedback loop
+        </div>
+        <div style="display:flex; align-items:center; font-size:1.8em; color:var(--green);">→</div>
+        <div class="card card-green col">
+            <strong class="green">After</strong><br><br>
+            20 specialists<br>Right model per task<br>90/100 quality gate<br>Persistent memory<br>Critic loop on every step
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     4. THE 7 TEAMS
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>7 Teams · 20 Skills</h2>
+    <div class="team-grid" style="margin-top:24px;">
+        <div class="team-box">
+            <strong>📋 Product</strong>
+            Gather Requirements<br>Write Specification
+        </div>
+        <div class="team-box">
+            <strong>🏗 Architecture</strong>
+            Analyze Repository<br>Design System
+        </div>
+        <div class="team-box">
+            <strong>💻 Development</strong>
+            Plan · Implement<br>Refactor · Fix Bugs
+        </div>
+        <div class="team-box">
+            <strong>🧪 QA</strong>
+            Generate Tests<br>Debug · Review Code
+        </div>
+        <div class="team-box">
+            <strong>🚀 DevOps</strong>
+            Configure CI/CD<br>Deploy Application
+        </div>
+        <div class="team-box">
+            <strong>📚 Docs</strong>
+            Update Docs<br>Release Notes
+        </div>
+        <div class="team-box" style="grid-column: 1 / -1; background:rgba(255,211,59,0.1); border-left:3px solid var(--yellow);">
+            <strong>🛡 Control Layer</strong>
+            Critic (quality gate) &nbsp;·&nbsp; Verify (spec compliance)
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     5. TOKEN EFFICIENCY
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>Token Efficiency: Tier-Matching</h2>
+    <p style="font-size:0.82em; color:var(--dim); margin-bottom:20px;">
+        Don't use Claude Opus for a quick scan. Don't use Haiku for your architecture spec.
+    </p>
+
+    <table class="cmp">
+        <tr>
+            <th>Tier</th><th>Model</th><th>Used For</th><th>Relative Cost</th>
+        </tr>
+        <tr>
+            <td><span class="tier-fast">fast</span></td>
+            <td>Claude 3.5 Haiku<br>GPT-4o-mini</td>
+            <td>Critic loops · repo scans · quick evals</td>
+            <td class="green">1×</td>
+        </tr>
+        <tr>
+            <td><span class="tier-balanced">balanced</span></td>
+            <td>Claude 3.5 Sonnet<br>GPT-4o</td>
+            <td>Implementation · tests · CI config</td>
+            <td class="yellow">4–8×</td>
+        </tr>
+        <tr>
+            <td><span class="tier-powerful">powerful</span></td>
+            <td>Claude 3 Opus<br>Llama 3.1 405B</td>
+            <td>Spec writing · system design · deep review</td>
+            <td class="red">20–50×</td>
+        </tr>
+    </table>
+
+    <blockquote>
+        The critic loop runs 5 iterations on every output —<br>
+        always on the <strong class="green">fast</strong> model.<br>
+        <span class="dim" style="font-size:0.85em;">That's a <strong class="yellow">10–20× cost saving</strong> vs running it on Opus.</span>
+    </blockquote>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     6. THE CRITIC LOOP
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>The Critic Loop</h2>
+    <p style="font-size:0.82em; color:var(--dim); margin-bottom:24px;">
+        Nothing moves forward until it scores ≥ 90 / 100.
+    </p>
+
+    <div class="flow">
+        <div class="flow-box">Generate output</div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-box">Critic scores it<br><span class="dim" style="font-size:0.85em;">(fast model · different reasoning pass)</span></div>
+        <div class="flow-arrow">↓</div>
+        <div class="flow-branch">
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+                <div class="flow-box bad">Score &lt; 90<br>↺ improve &amp; retry<br><span class="dim" style="font-size:0.8em;">max 5×</span></div>
+            </div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+                <div class="flow-box good">Score ≥ 90<br>→ verify vs spec<br>→ <strong>ship</strong></div>
+            </div>
+        </div>
+    </div>
+
+    <div style="margin-top:28px; font-size:0.8em;">
+        <strong>Real example — architecture task:</strong>
+        <div style="margin-top:12px;">
+            <div>Iteration 1 &nbsp;<strong class="red">62</strong> &nbsp;<span class="dim">— missing validation layer</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:62%; background:var(--red);"></div></div>
+            <div>Iteration 2 &nbsp;<strong class="yellow">85</strong> &nbsp;<span class="dim">— inconsistent naming</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:85%; background:var(--yellow);"></div></div>
+            <div>Iteration 3 &nbsp;<strong class="green">94</strong> &nbsp;<span class="green">✅ accepted</span></div>
+            <div class="progress-bar"><div class="progress-fill" style="width:94%; background:var(--green);"></div></div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     7. MEMORY
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>Memory: The Feature Most AI Tools Skip</h2>
+    <div class="cols" style="margin-top:16px; align-items:stretch;">
+        <div class="col">
+            <pre style="font-size:0.58em;"><code>memory/
+  ├── decisions.md
+  │     ← why PostgreSQL over MongoDB
+  ├── architecture.md
+  │     ← design all agents share
+  ├── debug_log.md
+  │     ← every bug & its fix
+  └── review_log.md
+        ← quality trends over time</code></pre>
+            <pre style="font-size:0.58em; margin-top:10px;"><code>tasks/request_001/
+  ├── 01_spec.md
+  ├── 02_design.md
+  ├── 03_implement.md
+  └── 04_tests.md</code></pre>
+        </div>
+        <div class="col" style="font-size:0.8em; line-height:2.2;">
+            <div class="card card-green">
+                <strong class="green">Read before acting</strong><br>
+                Every agent loads memory → full context instantly
+            </div>
+            <div class="card card-blue" style="margin-top:12px;">
+                <strong class="blue">Write after acting</strong><br>
+                Findings persisted → next agent picks up seamlessly
+            </div>
+            <div class="card card-yellow" style="margin-top:12px;">
+                <strong class="yellow">Sequential task numbering</strong><br>
+                Agents can never skip or forget a step
+            </div>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     8. SIX PROVIDERS
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>One Config. Six Backends. Full Data Control.</h2>
+    <table class="cmp" style="margin-top:18px;">
+        <tr>
+            <th>Provider</th><th>Set This in .env</th><th>Claude?</th><th>Data Location</th>
+        </tr>
+        <tr>
+            <td><code>github_models</code></td>
+            <td><code>GITHUB_TOKEN</code></td>
+            <td class="dim">GPT fallback</td>
+            <td>Microsoft <span class="badge badge-free">free</span></td>
+        </tr>
+        <tr>
+            <td><code>anthropic</code></td>
+            <td><code>ANTHROPIC_KEY</code></td>
+            <td class="green">✅</td>
+            <td>Anthropic servers <span class="badge badge-warn">DPA needed</span></td>
+        </tr>
+        <tr>
+            <td><code>openai</code></td>
+            <td><code>OPENAI_KEY</code></td>
+            <td class="dim">GPT only</td>
+            <td>OpenAI servers</td>
+        </tr>
+        <tr>
+            <td><code>bedrock</code></td>
+            <td><code>AWS_ACCESS_KEY_ID</code></td>
+            <td class="green">✅</td>
+            <td><strong>Your AWS</strong> <span class="badge badge-private">private</span></td>
+        </tr>
+        <tr>
+            <td><code>vertex</code></td>
+            <td><code>GOOGLE_CLOUD_PROJECT</code></td>
+            <td class="green">✅ + Gemini</td>
+            <td><strong>Your GCP</strong> <span class="badge badge-private">private</span></td>
+        </tr>
+        <tr>
+            <td><code>local</code></td>
+            <td><code>LOCAL_LLM_URL</code></td>
+            <td class="dim">Whatever you run</td>
+            <td><strong>Your machine</strong> <span class="badge badge-offline">offline</span></td>
+        </tr>
+    </table>
+    <p style="font-size:0.72em; color:var(--dim); margin-top:8px;">
+        Auto-discovery priority: <code>anthropic → bedrock → vertex → openai → local → github_models</code><br>
+        Override: <code>LLM_PROVIDER=bedrock</code> &nbsp;·&nbsp; Zero code changes required.
+    </p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     9. SMART FALLBACK
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>Smart Fallback — No Blind Downgrades</h2>
+    <p style="font-size:0.82em; color:var(--dim); margin-bottom:20px;">
+        When Claude isn't available, the system matches <strong>tier</strong>, not just cost.
+    </p>
+    <pre style="font-size:0.58em;"><code># Only GITHUB_TOKEN set — no Claude key:
+
+review_code   (claude / powerful) → Llama-3.1-405B      ← also "powerful"
+analyze_repo  (claude / fast)     → gpt-4o-mini          ← also "fast"
+plan_tasks    (claude / balanced) → gpt-4o               ← also "balanced"
+
+# With LOCAL_LLM_URL=http://localhost:11434/v1 (local wins over github_models):
+
+review_code   (claude / powerful) → deepseek-coder-v2    ← local, zero data exposure</code></pre>
+    <blockquote style="margin-top:24px;">
+        Blindly routing Opus tasks to <code>gpt-4o-mini</code> would cut quality by 60%+.<br>
+        <span class="dim" style="font-size:0.85em;">Tier-matching keeps quality consistent regardless of which provider is active.</span>
+    </blockquote>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     10. DATA PRIVACY RULE
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>The Data Privacy Rule</h2>
+    <blockquote style="font-size:0.95em;">
+        Before sending internal code to an AI API —<br>
+        ask: <strong class="yellow">who owns that data?</strong>
+    </blockquote>
+
+    <div style="font-size:0.82em; line-height:2.2; margin-top:20px; text-align:left; width:80%; margin-left:auto; margin-right:auto;">
+        <p><strong>GitHub Copilot Enterprise</strong> &nbsp;<span class="green">✅</span><br>
+        <span class="dim">Covered by your Microsoft agreement. No training on your data.</span></p>
+
+        <p><strong>Direct <code>ANTHROPIC_KEY</code></strong> &nbsp;<span class="yellow">⚠️</span><br>
+        <span class="dim">Goes to Anthropic's servers. Needs a Data Processing Addendum for enterprise use.</span></p>
+
+        <p><strong>AWS Bedrock</strong> &nbsp;<span class="green">✅</span><br>
+        <span class="dim">Claude runs in your AWS account. Data never leaves your infrastructure.</span></p>
+
+        <p><strong>Local LLM (Ollama, etc.)</strong> &nbsp;<span class="green">✅</span><br>
+        <span class="dim">Never touches the internet. Zero exposure.</span></p>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     11. LOCAL LLMs
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>Local LLMs Are Production-Ready</h2>
+    <p style="font-size:0.82em; color:var(--dim); margin-bottom:16px;">
+        Two commands. Offline. Free. Zero data exposure.
+    </p>
+    <pre style="font-size:0.6em;"><code>ollama pull deepseek-coder-v2:latest
+ollama serve</code></pre>
+    <pre style="font-size:0.6em;"><code>LOCAL_LLM_URL=http://localhost:11434/v1   # add to .env, done</code></pre>
+
+    <div class="cols" style="margin-top:20px; font-size:0.78em; gap:14px;">
+        <div class="card card-purple col">
+            <strong>Code tasks</strong><br>
+            DeepSeek Coder V2<br>Qwen 2.5 Coder 32B<br>Codestral
+        </div>
+        <div class="card card-blue col">
+            <strong>General reasoning</strong><br>
+            Llama 3.1 70B / 405B<br>Mixtral 8×22B
+        </div>
+        <div class="card card-green col">
+            <strong>Fast / critic</strong><br>
+            Phi-3 14B<br>Gemma 2 9B<br>Mistral 7B
+        </div>
+    </div>
+    <p style="margin-top:18px; font-size:0.75em; color:var(--dim);">
+        Auto-discovers models from server · guesses tier from name (<code>70b</code> → powerful, <code>3b</code> → fast)
+    </p>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     12. GET RUNNING
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>Get Running in 3 Steps</h2>
+    <div style="margin-top:20px;">
+        <div class="card card-yellow" style="font-size:0.82em; margin-bottom:14px;">
+            <strong class="yellow">1 · Install</strong>
+            <pre style="margin:10px 0 0; font-size:0.9em;"><code>.\setup.ps1        # Windows
+bash setup.sh      # Linux / macOS</code></pre>
+            <span class="dim" style="font-size:0.85em;">Creates venv · installs deps · registers <code>agent</code> CLI</span>
+        </div>
+        <div class="card card-blue" style="font-size:0.82em; margin-bottom:14px;">
+            <strong class="blue">2 · Configure .env</strong> (one line minimum)
+            <pre style="margin:10px 0 0; font-size:0.9em;"><code>GITHUB_TOKEN=ghp_...    # free, works immediately</code></pre>
+        </div>
+        <div class="card card-green" style="font-size:0.82em;">
+            <strong class="green">3 · Run</strong>
+            <pre style="margin:10px 0 0; font-size:0.9em;"><code>agent execute task.md
+gh pr diff | agent review
+git diff HEAD~1 | agent review || exit 1</code></pre>
+        </div>
+    </div>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     13. THE PAYOFF TABLE
+════════════════════════════════════════════════════════════════ -->
+<section>
+    <h2>The Payoff</h2>
+    <table class="cmp" style="margin-top:24px;">
+        <tr>
+            <th>Without Agents</th>
+            <th>With This Stack</th>
+        </tr>
+        <tr>
+            <td class="red">One LLM, one shot</td>
+            <td class="green">20 specialists, right model per task</td>
+        </tr>
+        <tr>
+            <td class="red">No quality gate</td>
+            <td class="green">Critic loop — nothing ships below 90/100</td>
+        </tr>
+        <tr>
+            <td class="red">Context lost between sessions</td>
+            <td class="green">Persistent memory across all runs</td>
+        </tr>
+        <tr>
+            <td class="red">Code goes to random APIs</td>
+            <td class="green">Full control over data location</td>
+        </tr>
+        <tr>
+            <td class="red">Expensive Opus for everything</td>
+            <td class="green">Tier-matched: cheap model for cheap tasks</td>
+        </tr>
+        <tr>
+            <td class="red">Vendor lock-in</td>
+            <td class="green">6 backends, swap with one .env line</td>
+        </tr>
+    </table>
+</section>
+
+
+<!-- ═══════════════════════════════════════════════════════════════
+     14. SUMMARY / CALL TO ACTION
+════════════════════════════════════════════════════════════════ -->
+<section data-background="linear-gradient(135deg,#0f0c29,#302b63,#24243e)">
+    <h2 style="font-size:1.4em;">Six things to remember</h2>
+    <div style="text-align:left; font-size:0.82em; line-height:2.3; margin-top:20px; width:85%; margin-left:auto; margin-right:auto;">
+        <p><span class="yellow">①</span> &nbsp;<strong>Multi-agent > single agent</strong> — reasoning ≠ coding ≠ reviewing</p>
+        <p><span class="yellow">②</span> &nbsp;<strong>Tier-match your models</strong> — 10–20× cost saving on high-frequency tasks</p>
+        <p><span class="yellow">③</span> &nbsp;<strong>Critic loop everything</strong> — never ship below 90/100</p>
+        <p><span class="yellow">④</span> &nbsp;<strong>Memory is the backbone</strong> — persistent context prevents repeated mistakes</p>
+        <p><span class="yellow">⑤</span> &nbsp;<strong>Provider = compliance choice</strong> — Bedrock / Vertex / Local = data stays yours</p>
+        <p><span class="yellow">⑥</span> &nbsp;<strong>Start free, scale to enterprise</strong> — <code>GITHUB_TOKEN</code> → Bedrock, one line change</p>
+    </div>
+    <p style="margin-top:30px; font-size:0.65em; color:#555;">
+        agent_core/ &nbsp;·&nbsp; config/models.yaml &nbsp;·&nbsp; docs/ &nbsp;·&nbsp; March 2026
+    </p>
+</section>
+
+
+</div></div>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/reveal.js/4.5.0/reveal.min.js"></script>
+<script>
+    Reveal.initialize({
+        hash: true,
+        transition: 'fade',
+        transitionSpeed: 'fast',
+        controls: true,
+        progress: true,
+        center: true,
+        slideNumber: 'c/t',
+        keyboard: true,
+        touch: true,
+        width: '100%',
+        height: '100%',
+        margin: 0.07,
+        minScale: 0.2,
+        maxScale: 2.0,
+    });
+</script>
+</body>
+</html>
+

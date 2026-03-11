@@ -1,0 +1,137 @@
+# AI Company Configuration
+
+# Project Settings
+project_name: agent_core
+version: 1.0.0
+description: Multi-agent AI development system with critic loops and spec verification
+
+# Auth — Copilot-First
+# Only ONE setup is needed:
+#   Option A (recommended): GITHUB_COPILOT_TOKEN (covers all models)
+#   Option B (direct APIs):  ANTHROPIC_KEY + OPENAI_KEY
+#
+# If both are set, provider-specific keys take priority per provider.
+auth:
+  required:
+    - GITHUB_COPILOT_TOKEN        # recommended — single token, all models
+  optional_overrides:
+    - ANTHROPIC_KEY               # overrides Copilot for Claude calls
+    - OPENAI_KEY                  # overrides Copilot for GPT calls
+
+# Critic Loop Configuration
+critic_loop:
+  enabled: true
+  max_iterations: 5
+  quality_threshold: 90       # default threshold
+
+  # Adaptive thresholds by request type
+  adaptive_thresholds:
+    hotfix: 75                # faster turnaround, lower bar
+    bug_fix: 85
+    feature: 90               # standard
+    refactor: 88
+    security_patch: 98        # highest bar – security matters
+    docs_only: 80
+
+  apply_to:
+    - write_spec
+    - design_system
+    - plan_tasks
+    - implement_feature
+    - review_code
+
+# Specification Verification
+spec_verification:
+  enabled: true
+  apply_to:
+    - write_spec
+    - design_system
+    - implement_feature
+  
+  compliance_threshold: 90
+
+# Skill → Model Assignment
+# Auth is resolved by ModelRouter in copilot_models.py:
+#   Claude skills → ANTHROPIC_KEY  or  GITHUB_COPILOT_TOKEN
+#   GPT skills    → OPENAI_KEY     or  GITHUB_COPILOT_TOKEN
+models:
+  claude_haiku:  claude-4-haiku-20260115      # fast / cheap (Jan 2026)
+  claude_sonnet: claude-4-sonnet-20260201     # balanced (Feb 2026)
+  claude_opus:   claude-4.6-opus-20260301     # most capable (Mar 2026)
+  gpt_5_4:       gpt-5.4-2026-02-15           # latest GPT (Feb 2026)
+  gpt_4_turbo:   gpt-4-turbo                  # legacy
+
+skill_models:
+  # Product
+  gather_requirements: claude_sonnet
+  write_spec:          claude_opus
+  # Architecture
+  analyze_repo:        claude_haiku
+  design_system:       claude_opus
+  # Development
+  plan_tasks:          claude_sonnet
+  implement_feature:   claude_sonnet
+  refactor_code:       claude_sonnet
+  fix_bug:             claude_sonnet
+  # QA
+  generate_tests:      gpt_5_4
+  debug_cycle:         claude_sonnet
+  review_code:         claude_opus
+  # DevOps
+  configure_ci:        gpt_5_4
+  deploy_app:          gpt_5_4
+  # Documentation
+  update_docs:         gpt_5_4
+  write_release_notes: gpt_5_4
+  # Control
+  critic:              claude_haiku
+  verify_spec:         claude_sonnet
+
+# Memory Configuration
+memory:
+  location: "./memory"
+  auto_update: true
+  files:
+    - repo_summary.md
+    - architecture.md
+    - decisions.md
+    - debug_log.md
+    - review_log.md
+    - verification.md
+    - qa.md
+    - devops.md
+    - docs.md
+    - release_notes.md
+
+# Task Configuration
+tasks:
+  location: "./tasks"
+  naming_pattern: "{request_id}/{number:02d}_{name}.md"
+  auto_order_by_dependencies: true
+
+# Execution Settings
+execution:
+  parallel_skills:
+    - generate_tests
+    - review_code
+  
+  timeout_per_skill: 300  # seconds
+  max_retries: 2
+  log_level: INFO
+
+# Budget Guard
+budget:
+  enabled: true
+  max_usd_per_run: 2.00   # hard stop if exceeded
+  warn_at_usd: 1.50       # print warning at this level
+  cost_per_1k_tokens:
+    claude:  0.018
+    gpt:     0.020
+    copilot: 0.004
+
+# Integration Hooks
+hooks:
+  before_workflow: null
+  after_skill: update_memory
+  after_critic_loop: log_iteration
+  after_verification: notify_status
